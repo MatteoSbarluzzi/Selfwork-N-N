@@ -8,8 +8,7 @@
 </head>
 <body>
     <x-navbar/>
-    <div class="container mt-4">
         {{$slot}}
-    </div>
+
 </body>
 </html>

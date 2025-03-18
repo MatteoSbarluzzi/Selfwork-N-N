@@ -2,36 +2,46 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProductRequest; 
 use App\Models\Product;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-   
-    public function index()
+    public function create()
     {
-        $products = Product::all(); 
-        return view('product.index', ['products' => $products]);
+        return view('product.create');
     }
 
-   
-    public function store(Request $request)
+    public function store(ProductRequest $request)
     {
-      
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'required|string',
-            'price' => 'required|numeric|min:0'
+        $name = $request->name;
+        $description = $request->description;
+        $price = $request->price;
+        $img = null;
+            
+
+        if ($request->file('img')) {
+            $img = $request
+                    ->file('img')
+                    ->store('img', 'public');
+        }
+
+        Product::create([
+            'name' => $name,
+            'description' => $description,
+            'price' => $price,
+            'img' => $img,
         ]);
 
-       
-        $product = new Product();
-        $product->name = $request->name;
-        $product->description = $request->description;
-        $product->price = $request->price;
-        $product->save();
+        return redirect()->back()->with('message', 'Prodotto inserito'); 
+    }
 
-  
-        return redirect()->route('product.index')->with('success', 'Prodotto creato con successo!');
+    public function index()
+    {
+        
+        $products = Product::all();
+
+        return view('product.index', ['products' => $products]);
     }
 }
