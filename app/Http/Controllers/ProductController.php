@@ -19,12 +19,9 @@ class ProductController extends Controller
         $description = $request->description;
         $price = $request->price;
         $img = null;
-            
 
-        if ($request->file('img')) {
-            $img = $request
-                    ->file('img')
-                    ->store('img', 'public');
+        if ($request->hasFile('img')) {
+            $img = $request->file('img')->store('img', 'public');
         }
 
         Product::create([
@@ -34,14 +31,12 @@ class ProductController extends Controller
             'img' => $img,
         ]);
 
-        return redirect()->back()->with('message', 'Prodotto inserito'); 
+        return redirect()->back()->with('message', 'Prodotto inserito');
     }
 
     public function index()
     {
-        
         $products = Product::all();
-
         return view('product.index', ['products' => $products]);
     }
 }
