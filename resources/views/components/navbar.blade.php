@@ -12,6 +12,9 @@
         <li class="nav-item">
           <a class="nav-link" href="{{ route('product.index') }}">Inventario</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ route('article.index') }}">I miei articoli</a>
+        </li>
 
         @guest
         <li class="nav-item">
@@ -27,7 +30,10 @@
           <a class="nav-link" href="{{ route('product.create') }}">Crea Prodotto</a>
         </li>
         <li class="nav-item">
-          <span class="nav-link" href="#">Benvenuto {{ Auth::user()->name }}</span>
+          <a class="nav-link" href="{{ route('article.create') }}">Crea Articolo</a>
+        </li>
+        <li class="nav-item">
+          <span class="nav-link" href="#">Benvenut* {{ Auth::user()->name }}</span>
         </li>
         <li class="nav-item">
           <form action="{{ route('logout') }}" method="POST">
