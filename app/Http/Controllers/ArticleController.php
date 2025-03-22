@@ -1,80 +1,89 @@
 <?php
 
+// Percorso: app/Http/Controllers/ArticleController.php
+
 namespace App\Http\Controllers;
 
 use App\Models\Article;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ArticleController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         $articles = Article::all();
         return view('article.index', compact('articles'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         return view('article.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        $path = null;
-
-        if ($request->hasFile('img')) {
-            $path = $request->file('img')->store('img', 'public');
-            $path = str_replace('public/', '', $path); 
-        }
-
-        Article::create([
-            'title' => $request->title,
-            'subtitle' => $request->subtitle,
-            'body' => $request->body,
-            'img' => $path ?? 'img/default.jpg',
+        $request->validate([
+            'title' => 'required|min:3',
+            'subtitle' => 'required|min:3',
+            'body' => 'required|min:10',
+            'img' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        return redirect()->back()->with('message', 'Articolo inserito correttamente');
+        $data = $request->only(['title', 'subtitle', 'body']);
+
+        if ($request->hasFile('img')) {
+            $data['img'] = $request->file('img')->store('img', 'public');
+        } else {
+            $data['img'] = 'img/default.jpg';
+        }
+
+        Article::create($data);
+
+        return redirect()->route('article.index')->with('message', 'Articolo creato con successo!');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Article $article)
     {
         return view('article.show', compact('article'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Article $article)
     {
         return view('article.edit', compact('article'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, Article $article)
     {
-        //
+        $request->validate([
+            'title' => 'required|min:3',
+            'subtitle' => 'required|min:3',
+            'body' => 'required|min:10',
+            'img' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+        ]);
+
+        $data = $request->only(['title', 'subtitle', 'body']);
+
+        if ($request->hasFile('img')) {
+            if ($article->img && $article->img !== 'img/default.jpg') {
+                Storage::disk('public')->delete($article->img);
+            }
+            $data['img'] = $request->file('img')->store('img', 'public');
+        }
+
+        $article->update($data);
+
+        return redirect()->route('article.show', $article)->with('message', 'Articolo aggiornato con successo!');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Article $article)
     {
-        //
+        if ($article->img && $article->img !== 'img/default.jpg') {
+            Storage::disk('public')->delete($article->img);
+        }
+
+        $article->delete();
+
+        return redirect()->route('article.index')->with('message', 'Articolo eliminato con successo!');
     }
 }

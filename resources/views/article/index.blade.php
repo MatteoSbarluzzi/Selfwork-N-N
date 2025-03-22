@@ -13,14 +13,14 @@
 <div class="container">
     <div class="row my-5">
         @foreach($articles as $article)
-            <div class="col-12 col-md-4">
-                <div class="card" style="width: 18rem;">
+            <div class="col-12 col-md-4 mb-4">
+                <div class="card" style="width: 100%;">
                     <img src="{{ Storage::url($article->img) }}" class="card-img-top" alt="...">
                     <div class="card-body">
                         <h5 class="card-title">{{ $article->title }}</h5>
                         <p class="card-subtitle">{{ $article->subtitle }}</p>
                         <p class="card-text">{{ $article->body }}</p>
-                        <a href="{{ route('article.show', $article) }}" class="btn btn-primary">Vedi dettaglio</a>
+                        <a href="{{ route('article.show', $article) }}" class="btn btn-outline-primary w-100 mt-2">🔍 Vedi dettaglio</a>
                     </div>
                 </div>
             </div>

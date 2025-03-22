@@ -134,3 +134,18 @@ form input::placeholder, form textarea::placeholder {
 }
 
 
+.card .btn {
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    padding: 10px 20px;
+    text-transform: uppercase;
+    transition: all 0.3s ease-in-out;
+}
+
+
+.card .btn:hover {
+    transform: scale(1.03);
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.2);
+}
+
