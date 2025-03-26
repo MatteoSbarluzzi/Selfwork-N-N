@@ -3,9 +3,16 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Article extends Model
 {
-    //
-    protected $fillable = ['title', 'subtitle', 'body', 'img'];
+    use HasFactory;
+
+    protected $fillable = ['title', 'subtitle', 'body', 'img', 'user_id'];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

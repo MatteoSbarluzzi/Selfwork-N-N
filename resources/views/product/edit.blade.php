@@ -1,5 +1,3 @@
-<!-- Percorso: resources/views/product/edit.blade.php -->
-
 <x-layout>
   <header class="header">
     <div class="container h-100">
@@ -20,17 +18,17 @@
 
       <div class="mb-3">
         <label for="name" class="form-label">Nome</label>
-        <input name="name" type="text" value="{{ old('name', $product->name) }}" class="form-control" id="name">
+        <input name="name" type="text" value="{{ old('name', $product->name) }}" class="form-control" id="name" required>
       </div>
 
       <div class="mb-3">
         <label for="description" class="form-label">Descrizione</label>
-        <textarea name="description" class="form-control" id="description" rows="3">{{ old('description', $product->description) }}</textarea>
+        <textarea name="description" class="form-control" id="description" rows="3" required>{{ old('description', $product->description) }}</textarea>
       </div>
 
       <div class="mb-3">
         <label for="price" class="form-label">Prezzo</label>
-        <input name="price" type="text" value="{{ old('price', $product->price) }}" class="form-control" id="price">
+        <input name="price" type="number" step="0.01" value="{{ old('price', $product->price) }}" class="form-control" id="price" required>
       </div>
 
       <div class="mb-3">

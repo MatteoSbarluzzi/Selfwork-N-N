@@ -1,5 +1,3 @@
-<!-- Percorso: resources/views/article/edit.blade.php -->
-
 <x-layout>
     <header class="header">
         <div class="container h-100">
@@ -11,7 +9,7 @@
         </div>
     </header>
 
-    <x-display-errors/>
+
 
     <div class="container">
         <form action="{{ route('article.update', $article) }}" method="POST" enctype="multipart/form-data">
@@ -20,21 +18,26 @@
 
             <div class="mb-3">
                 <label for="title" class="form-label">Titolo</label>
-                <input name="title" type="text" value="{{ old('title', $article->title) }}" class="form-control" id="title">
+                <input name="title" type="text" value="{{$article->title}}" class="form-control" id="title">
             </div>
 
             <div class="mb-3">
                 <label for="subtitle" class="form-label">Sottotitolo</label>
-                <input name="subtitle" type="text" value="{{ old('subtitle', $article->subtitle) }}" class="form-control" id="subtitle">
+                <input name="subtitle" type="text" value="{{$article->subtitle}}" class="form-control" id="subtitle">
             </div>
 
             <div class="mb-3">
-                <label for="body" class="form-label">Testo</label>
-                <textarea name="body" class="form-control" id="body">{{ old('body', $article->body) }}</textarea>
+                <label for="body" class="form-label">Corpo dell'articolo</label>
+                <textarea name="body" class="form-control" id="body" cols="30" rows="10">{{$article->body}}</textarea>
             </div>
 
             <div class="mb-3">
-                <label for="img" class="form-label">Immagine</label>
+                <span class="form-label">Immagine attuale:</span>
+                <img src="{{ Storage::url($article->img) }}" alt="{{$article->title}}" width="400" height="200">
+            </div>
+
+            <div class="mb-3">
+                <label for="img" class="form-label">Inserisci immagine</label>
                 <input name="img" type="file" class="form-control">
                 @if(Storage::exists($article->img))
                     <img src="{{ Storage::url($article->img) }}" class="img-fluid mt-2" width="200">

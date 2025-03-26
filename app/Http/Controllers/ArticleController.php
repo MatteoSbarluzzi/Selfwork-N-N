@@ -1,18 +1,18 @@
 <?php
 
-// Percorso: app/Http/Controllers/ArticleController.php
-
 namespace App\Http\Controllers;
 
 use App\Models\Article;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 
 class ArticleController extends Controller
 {
     public function index()
     {
-        $articles = Article::all();
+        // Mostra tutti gli articoli a tutti
+        $articles = Article::with('user')->get();
         return view('article.index', compact('articles'));
     }
 
@@ -38,6 +38,8 @@ class ArticleController extends Controller
             $data['img'] = 'img/default.jpg';
         }
 
+        $data['user_id'] = Auth::id();
+
         Article::create($data);
 
         return redirect()->route('article.index')->with('message', 'Articolo creato con successo!');
@@ -50,11 +52,20 @@ class ArticleController extends Controller
 
     public function edit(Article $article)
     {
+        // Solo l’autore può modificare
+        if (Auth::id() !== $article->user_id) {
+            abort(403);
+        }
+
         return view('article.edit', compact('article'));
     }
 
     public function update(Request $request, Article $article)
     {
+        if (Auth::id() !== $article->user_id) {
+            abort(403);
+        }
+
         $request->validate([
             'title' => 'required|min:3',
             'subtitle' => 'required|min:3',
@@ -73,11 +84,15 @@ class ArticleController extends Controller
 
         $article->update($data);
 
-        return redirect()->route('article.show', $article)->with('message', 'Articolo aggiornato con successo!');
+        return redirect()->route('article.show', $article)->with('message', 'Articolo modificato con successo!');
     }
 
     public function destroy(Article $article)
     {
+        if (Auth::id() !== $article->user_id) {
+            abort(403);
+        }
+
         if ($article->img && $article->img !== 'img/default.jpg') {
             Storage::disk('public')->delete($article->img);
         }

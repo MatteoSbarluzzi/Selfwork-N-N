@@ -10,6 +10,8 @@
     </div>
 </header>
 
+<x-display-message />
+
 <div class="container">
     <div class="row my-5">
         @foreach($articles as $article)

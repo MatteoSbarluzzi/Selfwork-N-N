@@ -1,7 +1,5 @@
 <?php
 
-// Percorso: routes/web.php
-
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PublicController;
 use App\Http\Controllers\ArticleController;
@@ -27,4 +25,3 @@ Route::get('/article/show/{article}', [ArticleController::class, 'show'])->name(
 Route::get('/article/edit/{article}', [ArticleController::class, 'edit'])->name('article.edit')->middleware('auth');
 Route::put('/article/update/{article}', [ArticleController::class, 'update'])->name('article.update')->middleware('auth');
 Route::delete('/article/destroy/{article}', [ArticleController::class, 'destroy'])->name('article.destroy')->middleware('auth');
-

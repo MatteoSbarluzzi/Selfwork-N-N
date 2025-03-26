@@ -1,11 +1,10 @@
 <?php
 
-// Percorso: app/Http/Controllers/ProductController.php
-
 namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\ProductRequest;
 
@@ -13,7 +12,8 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $products = Product::all();
+        // Carica i prodotti con i relativi utenti (per usare $product->user->name nelle view)
+        $products = Product::with('user')->get();
         return view('product.index', compact('products'));
     }
 
@@ -31,6 +31,8 @@ class ProductController extends Controller
         } else {
             $data['img'] = 'img/default.jpg';
         }
+
+        $data['user_id'] = Auth::id();
 
         Product::create($data);
 
