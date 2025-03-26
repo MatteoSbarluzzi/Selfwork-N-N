@@ -11,7 +11,7 @@ class ArticleController extends Controller
 {
     public function index()
     {
-        // Mostra tutti gli articoli a tutti
+       
         $articles = Article::with('user')->get();
         return view('article.index', compact('articles'));
     }
@@ -52,7 +52,7 @@ class ArticleController extends Controller
 
     public function edit(Article $article)
     {
-        // Solo l’autore può modificare
+        
         if (Auth::id() !== $article->user_id) {
             abort(403);
         }

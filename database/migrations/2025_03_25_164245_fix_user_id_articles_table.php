@@ -13,7 +13,7 @@ return new class extends Migration
                 try {
                     $table->dropForeign(['user_id']);
                 } catch (\Throwable $e) {
-                    // FK potrebbe non esistere
+                   
                 }
 
                 $table->dropColumn('user_id');

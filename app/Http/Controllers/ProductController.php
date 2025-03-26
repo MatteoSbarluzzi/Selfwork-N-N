@@ -12,7 +12,7 @@ class ProductController extends Controller
 {
     public function index()
     {
-        // Carica i prodotti con i relativi utenti (per usare $product->user->name nelle view)
+       
         $products = Product::with('user')->get();
         return view('product.index', compact('products'));
     }
