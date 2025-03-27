@@ -1,15 +1,8 @@
 <x-layout>
 
-    <header class="header">
-        <div class="container h-100">
-            <div class="row justify-content-center align-content-center h-100">
-                <div class="col-12 col-md-6 d-flex justify-content-center">
-                    <h1 class="text-center">Homepage</h1>
-                    
-                </div>
-            </div>
-        </div>
-    </header>
+
+
+    <x-masthead title="Inserisci un nuovo articolo"></x-masthead>
 
   
 
@@ -34,6 +27,25 @@
     <label for="body" class="form-label">Corpo articolo</label>
    <textarea name="body" class="form-control" id="body" cols="30" rows="10">{{old('body')}}</textarea>
 </div>
+
+<div class="mb-3">
+  <label class="form-label">Seleziona Tag</label>
+  @foreach($tags as $tag)
+    <div class="form-check">
+      <input 
+        class="form-check-input" 
+        type="checkbox" 
+        name="tags[]" 
+        value="{{ $tag->id }}" 
+        id="tag-{{ $tag->id }}"
+      >
+      <label class="form-check-label" for="tag-{{ $tag->id }}">
+        {{ $tag->name }}
+      </label>
+    </div>
+  @endforeach
+</div>
+
 
 <div class="mb-3">
     <label for="img" class="form-label">Inserisci immagine</label>

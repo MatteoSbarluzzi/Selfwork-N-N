@@ -1,5 +1,5 @@
 @import 'bootstrap';
-
+@import './masthead.css';
 
 body {
     background: linear-gradient(180deg, #0f2027, #203a43, #2c5364);
@@ -9,21 +9,7 @@ body {
     padding: 0;
 }
 
-
-.header {
-    height: 50vh;
-    background: linear-gradient(135deg, #ff4b1f, #ff9068);
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    font-size: 2rem;
-    font-weight: bold;
-    border-bottom: 5px solid rgba(255, 255, 255, 0.2);
-    margin-bottom: 60px;
-}
-
+/* .header rimosso perché sostituito da .masthead */
 
 .navbar {
     background: rgba(0, 0, 0, 0.9) !important;
@@ -40,7 +26,6 @@ body {
     color: #ff9068 !important;
 }
 
-
 .inventory-container {
     display: flex;
     flex-wrap: wrap;
@@ -50,7 +35,6 @@ body {
     max-width: 1600px;
     margin: auto;
 }
-
 
 .card {
     border-radius: 20px;
@@ -86,7 +70,6 @@ body {
     color: #ffb74d;
     font-weight: 600;
 }
-
 
 .btn-primary {
     background: linear-gradient(135deg, #ff4b1f, #ff9068);
@@ -129,10 +112,10 @@ form input, form textarea {
     padding: 10px;
 }
 
-form input::placeholder, form textarea::placeholder {
+form input::placeholder,
+form textarea::placeholder {
     color: #555;
 }
-
 
 .card .btn {
     border-radius: 12px;
@@ -143,9 +126,7 @@ form input::placeholder, form textarea::placeholder {
     transition: all 0.3s ease-in-out;
 }
 
-
 .card .btn:hover {
     transform: scale(1.03);
     box-shadow: 0 0 12px rgba(0, 0, 0, 0.2);
 }
-

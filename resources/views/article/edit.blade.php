@@ -1,50 +1,61 @@
 <x-layout>
-    <header class="header">
-        <div class="container h-100">
-            <div class="row justify-content-center align-content-center h-100">
-                <div class="col-12 col-md-6 d-flex justify-content-center">
-                    <h1 class="text-center">Modifica Articolo</h1>
-                </div>
-            </div>
-        </div>
-    </header>
+  <x-display-message />
+  <x-display-errors />
 
+  <div class="container">
+    <div class="row mt-5 justify-content-center my-5">
+      <div class="col-12 col-md-6 justify-content-center">
+        <form class="rounded-4 shadow bg-secondary-subtle p-3" action="{{ route('article.update', $article) }}" method="POST" enctype="multipart/form-data">
+          @csrf
+          @method('PUT')
 
+          <div class="mb-3">
+            <label for="title" class="form-label">Titolo articolo</label>
+            <input name="title" type="text" value="{{ $article->title }}" class="form-control" id="title">
+          </div>
 
-    <div class="container">
-        <form action="{{ route('article.update', $article) }}" method="POST" enctype="multipart/form-data">
-            @csrf
-            @method('PUT')
+          <div class="mb-3">
+            <label for="subtitle" class="form-label">Sottotitolo articolo</label>
+            <input name="subtitle" type="text" value="{{ $article->subtitle }}" class="form-control" id="subtitle">
+          </div>
 
-            <div class="mb-3">
-                <label for="title" class="form-label">Titolo</label>
-                <input name="title" type="text" value="{{$article->title}}" class="form-control" id="title">
-            </div>
+          <div class="mb-3">
+            <label for="body" class="form-label">Corpo articolo</label>
+            <textarea name="body" class="form-control" id="body" cols="30" rows="10">{{ $article->body }}</textarea>
+          </div>
 
-            <div class="mb-3">
-                <label for="subtitle" class="form-label">Sottotitolo</label>
-                <input name="subtitle" type="text" value="{{$article->subtitle}}" class="form-control" id="subtitle">
-            </div>
+          <div class="mb-3">
+            <label class="form-label">Tag associati</label>
+            @foreach ($tags as $tag)
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  name="tags[]"
+                  type="checkbox"
+                  value="{{ $tag->id }}"
+                  id="tag-{{ $tag->id }}"
+                  @if($article->tags->contains($tag)) checked @endif
+                >
+                <label class="form-check-label" for="tag-{{ $tag->id }}">
+                  {{ $tag->name }}
+                </label>
+              </div>
+            @endforeach
+          </div>
 
-            <div class="mb-3">
-                <label for="body" class="form-label">Corpo dell'articolo</label>
-                <textarea name="body" class="form-control" id="body" cols="30" rows="10">{{$article->body}}</textarea>
-            </div>
+          <div class="mb-3">
+            <label class="form-label">Immagine attuale:</label><br>
+            <img src="{{ Storage::url($article->img) }}" alt="{{ $article->title }}" width="300" class="rounded">
+          </div>
 
-            <div class="mb-3">
-                <span class="form-label">Immagine attuale:</span>
-                <img src="{{ Storage::url($article->img) }}" alt="{{$article->title}}" width="400" height="200">
-            </div>
+          <div class="mb-3">
+            <label for="img" class="form-label">Sostituisci immagine</label>
+            <input name="img" type="file" class="form-control" id="img">
+          </div>
 
-            <div class="mb-3">
-                <label for="img" class="form-label">Inserisci immagine</label>
-                <input name="img" type="file" class="form-control">
-                @if(Storage::exists($article->img))
-                    <img src="{{ Storage::url($article->img) }}" class="img-fluid mt-2" width="200">
-                @endif
-            </div>
-
-            <button type="submit" class="btn btn-success w-100 py-2 fw-bold">💾 Salva modifiche</button>
+          <button type="submit" class="btn btn-primary">Salva modifiche</button>
         </form>
+      </div>
     </div>
+  </div>
 </x-layout>

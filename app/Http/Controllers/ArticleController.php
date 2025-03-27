@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Article;
+use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
@@ -11,14 +12,14 @@ class ArticleController extends Controller
 {
     public function index()
     {
-       
         $articles = Article::with('user')->get();
         return view('article.index', compact('articles'));
     }
 
     public function create()
     {
-        return view('article.create');
+        $tags = Tag::all();
+        return view('article.create', compact('tags'));
     }
 
     public function store(Request $request)
@@ -28,6 +29,7 @@ class ArticleController extends Controller
             'subtitle' => 'required|min:3',
             'body' => 'required|min:10',
             'img' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'tags' => 'array|exists:tags,id',
         ]);
 
         $data = $request->only(['title', 'subtitle', 'body']);
@@ -40,7 +42,11 @@ class ArticleController extends Controller
 
         $data['user_id'] = Auth::id();
 
-        Article::create($data);
+        $article = Article::create($data);
+
+        if ($request->has('tags')) {
+            $article->tags()->attach($request->tags);
+        }
 
         return redirect()->route('article.index')->with('message', 'Articolo creato con successo!');
     }
@@ -52,12 +58,12 @@ class ArticleController extends Controller
 
     public function edit(Article $article)
     {
-        
         if (Auth::id() !== $article->user_id) {
             abort(403);
         }
 
-        return view('article.edit', compact('article'));
+        $tags = Tag::all();
+        return view('article.edit', compact('article', 'tags'));
     }
 
     public function update(Request $request, Article $article)
@@ -71,6 +77,7 @@ class ArticleController extends Controller
             'subtitle' => 'required|min:3',
             'body' => 'required|min:10',
             'img' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'tags' => 'array|exists:tags,id',
         ]);
 
         $data = $request->only(['title', 'subtitle', 'body']);
@@ -80,11 +87,14 @@ class ArticleController extends Controller
                 Storage::disk('public')->delete($article->img);
             }
             $data['img'] = $request->file('img')->store('img', 'public');
+        } else {
+            $data['img'] = $article->img;
         }
 
         $article->update($data);
+        $article->tags()->sync($request->tags ?? []);
 
-        return redirect()->route('article.show', $article)->with('message', 'Articolo modificato con successo!');
+        return redirect()->route('article.index')->with('message', 'Articolo modificato con successo!');
     }
 
     public function destroy(Article $article)
@@ -97,6 +107,7 @@ class ArticleController extends Controller
             Storage::disk('public')->delete($article->img);
         }
 
+        $article->tags()->detach(); 
         $article->delete();
 
         return redirect()->route('article.index')->with('message', 'Articolo eliminato con successo!');

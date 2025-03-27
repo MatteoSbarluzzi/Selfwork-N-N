@@ -13,7 +13,7 @@
         </li>
 
         <li class="nav-item">
-          <a class="nav-link" href="{{ route('product.index') }}">Inventario</a>
+          <a class="nav-link" href="{{ route('product.index') }}">I miei prodotti</a>
         </li>
 
         <li class="nav-item">
