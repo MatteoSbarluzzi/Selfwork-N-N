@@ -22,11 +22,12 @@ return new class extends Migration
     }
 
     public function down(): void
-    {
-        Schema::table('articles', function (Blueprint $table) {
-            if (!Schema::hasColumn('articles', 'user_id')) {
-                $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            }
-        });
-    }
+{
+    Schema::table('articles', function (Blueprint $table) {
+        if (!Schema::hasColumn('articles', 'user_id')) {
+            $table->foreignId('user_id')->nullable()->constrained()->onDelete('set null');
+        }
+    });
+}
+
 };
