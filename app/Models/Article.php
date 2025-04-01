@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Models\tag;
+use App\Models\Tag;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
